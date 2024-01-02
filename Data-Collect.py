@@ -157,35 +157,36 @@ def simple_xep_plot(device_name, record=False, baseband=False):
             # Finish and save X4 files inside a previously defined directory
             # Stop acquisition
             xep.x4driver_set_fps(0)
-            filename = os.path.join(dir, timestr + ".txt")
+            filename = timestr + ".txt"
+            full_path = os.path.join(dir, filename)
+            f = open(full_path, "w+")
+            f.write("FPS: " + str(FPS) + "\n")
+            f.write("area_start: " + str(area_start) + "\n")
+            f.write("area_end: " + str(area_end) + "\n")
+            f.write("fs: " + str(fs) + "\n")
+            f.write("fc: " + str(fc) + "\n")
+            f.write("PRF: " + str(15.1875e6 ) + "\n")
+            f.write("dac_min: " + str(900) + "\n")
+            f.write("dac_max: " + str(1150) + "\n")
+            f.write("interations: " + str(16) + "\n")
+            f.write("duty_: " + str(0.95) + "\n")
+            f.write("pulses_per_step: " + str(26) + "\n")
 
-            # Write Acquisition parameters in the file
-            with open(filename, "w+") as f:
-                f.write("FPS: " + str(FPS) + "\n")
-                f.write("area_start: " + str(area_start) + "\n")
-                f.write("area_end: " + str(area_end) + "\n")
-                f.write("fs: " + str(fs) + "\n")
-                f.write("fc: " + str(fc) + "\n")
-                f.write("PRF: " + str(15.1875e6 ) + "\n")
-                f.write("dac_min: " + str(900) + "\n")
-                f.write("dac_max: " + str(1150) + "\n")
-                f.write("interations: " + str(16) + "\n")
-                f.write("duty_: " + str(0.95) + "\n")
-                f.write("pulses_per_step: " + str(26) + "\n")
-
-                # Write matrix inside file
-                for i in range(len(raw_data)):
-                    if isinstance(raw_data[i], np.ndarray):
+            for i in range(len(raw_data) - 1):
+                if isinstance(raw_data[i], np.ndarray):
+                    if raw_data[i].size > 1:
+                        # Process the NumPy array
                         for x in np.nditer(raw_data[i]):
-                            if raw_data[i].size > 1:
-                                f.write(str(x) + " ")
-                            else:
-                                f.write("\n" + str(x) + "\n")
+                            f.write(str(x) + " ")
                     else:
-                        # Handle the case where raw_data[i] is not a numpy array
-                        f.write(str(raw_data[i]) + " ")
-                f.write("\n")
-                f.close()
+                        # Handle the case where raw_data[i] is a single float
+                        f.write("\n" + str(raw_data[i]) + "\n")
+                else:
+                    # Handle the case where raw_data[i] is a float
+                    f.write("\n" + str(raw_data[i]) + "\n")
+
+            f.write("\n")
+            f.close()
 
             break
 
