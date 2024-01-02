@@ -175,11 +175,15 @@ def simple_xep_plot(device_name, record=False, baseband=False):
 
                 # Write matrix inside file
                 for i in range(len(raw_data)):
-                    for x in np.nditer(raw_data[i]):
-                        if raw_data[i].size > 1:
-                            f.write(str(x) + " ")
-                        else:
-                            f.write("\n" + str(x) + "\n")
+                    if isinstance(raw_data[i], np.ndarray):
+                        for x in np.nditer(raw_data[i]):
+                            if raw_data[i].size > 1:
+                                f.write(str(x) + " ")
+                            else:
+                                f.write("\n" + str(x) + "\n")
+                    else:
+                        # Handle the case where raw_data[i] is not a numpy array
+                        f.write(str(raw_data[i]) + " ")
                 f.write("\n")
                 f.close()
 
