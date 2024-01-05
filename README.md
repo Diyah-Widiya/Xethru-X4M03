@@ -13,7 +13,7 @@ Here are the steps that need to be taken to run the program:
 
 # Reference
 1. **Novelda**
-   - *Description:* Novelda is a reference for [insert brief description here].
+   - *Description:* Novelda is a reference for .
    - *Link:* [Novelda Repository](https://github.com/novelda)
 
 2. **Lopes, A. S. D. (2020)**
