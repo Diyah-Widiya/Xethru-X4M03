@@ -148,7 +148,7 @@ def simple_xep_plot(device_name, record=False, baseband=False):
     while True :
     # Update the data and check if the data is okay
         if time.time() - start < interval:
-            data = frame
+            data = read_frame()
             print("ukuran data-tiap frame : ", data.shape)
             print("data frame : ", data)
             raw_data.append(time.time())
